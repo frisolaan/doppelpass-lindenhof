@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doppelpass · Sportschule Lindenhof Wil · Prototyp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f9f8f4; --card:#fff; --ink:#1d1d1b; --ink2:#3c3c3b; --muted:#6f6f6b; --line:#e8e6df; --line2:#d9d6cc;
+  --blue:#00b0ea; --mag:#c95097; --yel:#ffd644; --grn:#5ab57a; --focus:#00799f; --r:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+main:focus{outline:none}
+.cap{text-transform:uppercase;letter-spacing:.22em;font-weight:800;font-size:12px}
+
+/* Kopf */
+.top{position:sticky;top:0;z-index:30;background:rgba(249,248,244,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:22px;padding:0 28px;height:68px}
+.brand{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px}
+.rings{width:38px;height:38px;position:relative;flex:none}
+.rings i{position:absolute;inset:0;border-radius:50%;border:5px solid transparent}
+.rings i:nth-child(1){border-color:var(--mag) transparent transparent var(--mag);transform:rotate(-20deg)}
+.rings i:nth-child(2){border-color:transparent var(--blue) var(--blue) transparent;inset:3px;transform:rotate(15deg)}
+.rings i:nth-child(3){border-color:transparent transparent var(--yel) var(--yel);inset:6px}
+.rings i:nth-child(4){border-color:var(--grn) transparent transparent transparent;inset:9px;transform:rotate(200deg)}
+.brand b{font-weight:900;font-size:22px;letter-spacing:-.01em}
+.brand small{display:block;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:-3px}
+.nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{border:0;background:none;padding:9px 11px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);border-radius:10px;white-space:nowrap;position:relative}
+.nav button:hover{background:#efede5}
+.nav button[aria-current="page"]{color:var(--ink)}
+.nav button[aria-current="page"]::after{content:"";position:absolute;left:11px;right:11px;bottom:3px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--mag),var(--blue),var(--yel),var(--grn))}
+.who{margin-left:auto;position:relative}
+.who>button{display:flex;align-items:center;gap:8px;border:1.5px solid var(--ink);background:#fff;border-radius:999px;padding:6px 14px 6px 8px;font-weight:800;font-size:14px;white-space:nowrap}
+.dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;background:var(--yel)}
+.menu{position:absolute;right:0;top:48px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 40px -18px rgba(0,0,0,.3);padding:8px;width:300px;display:none}
+.menu.open{display:block}
+.menu .cap{padding:8px 10px 4px;color:var(--muted);font-size:10.5px}
+.menu button{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:0;background:none;border-radius:10px;padding:8px 10px}
+.menu button:hover,.menu button[aria-current="true"]{background:#f3f1ea}
+.menu button b{display:block;font-size:14px}
+.menu button span{font-size:12.5px;color:var(--muted)}
+.proto{background:var(--ink);color:#fff;font-size:12.5px;padding:7px 28px;display:flex;gap:10px;flex-wrap:wrap}
+.proto b{color:var(--yel)}
+
+main{max-width:1200px;margin:0 auto;padding:26px 28px 90px}
+.hero{position:relative;overflow:hidden;background:#fff;border-radius:28px;padding:34px 36px;border:1px solid var(--line);margin-bottom:22px}
+.arcs{position:absolute;right:-90px;top:-120px;width:420px;height:420px;pointer-events:none;opacity:.9}
+.arcs i{position:absolute;border-radius:50%;border:34px solid transparent}
+.arcs i:nth-child(1){inset:0;border-color:var(--mag) transparent transparent transparent;transform:rotate(-30deg)}
+.arcs i:nth-child(2){inset:40px;border-color:transparent var(--blue) transparent transparent;transform:rotate(20deg)}
+.arcs i:nth-child(3){inset:80px;border-color:transparent transparent var(--yel) transparent;transform:rotate(-10deg)}
+.arcs i:nth-child(4){inset:120px;border-color:transparent transparent transparent var(--grn);transform:rotate(40deg)}
+.hero .cap{color:var(--muted)}
+.hero h1{font-size:clamp(32px,4.2vw,48px);font-weight:900;line-height:1.05;margin:10px 0 10px;max-width:700px;position:relative}
+.hero p{font-size:17px;color:var(--ink2);max-width:640px;margin:0;position:relative}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;position:relative}
+.btn{border:2px solid var(--ink);background:var(--yel);border-radius:999px;padding:11px 20px;font-weight:800;font-size:15px;box-shadow:3px 3px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn.sec{background:#fff;box-shadow:none;border-color:var(--line2)}
+.btn.sm{padding:7px 14px;font-size:13.5px;box-shadow:2px 2px 0 var(--ink)}
+.btn.sec.sm{box-shadow:none}
+.btn.dark{background:var(--ink);color:#fff;box-shadow:none}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c)}
+.kpi .n{font-size:34px;font-weight:900;line-height:1}
+.kpi .l{font-size:13.5px;color:var(--muted);margin-top:4px}
+
+h2.sec{font-size:13px;margin:30px 0 12px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:14px}
+.panel h3{margin:0 0 6px;font-size:20px;font-weight:900}
+.sub{color:var(--muted);font-size:14px}
+.next{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:linear-gradient(120deg,#fff 60%,#fff8d2);}
+.next .t{flex:1;min-width:240px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.scene{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.scene:hover{transform:translateY(-3px);box-shadow:0 16px 30px -20px rgba(0,0,0,.35)}
+.scene:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.scene .band{position:absolute;left:0;right:0;top:0;height:6px;background:var(--c)}
+.scene .meta{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);font-weight:700}
+.scene h4{margin:2px 0 0;font-size:18px;font-weight:900;line-height:1.2}
+.scene p{margin:0;font-size:14px;color:var(--ink2)}
+.scene .foot{margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;background:#f1efe8;color:var(--ink2)}
+.pill.open{background:#fff3c4;color:#6b5300}
+.pill.ok{background:#e3f3e8;color:#2a6e40}
+.pill.priv{background:#efeee9;color:#55554f}
+.pill.share{background:#e0f4fb;color:#00627f}
+.pill.skill{background:var(--c);color:var(--ci)}
+.scene.add{align-items:center;justify-content:center;text-align:center;border:2px dashed var(--line2);background:transparent;min-height:180px;color:var(--muted);font-weight:800}
+
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chipbtn{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:700}
+.chipbtn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Saison */
+.season{position:relative;margin:8px 0 6px;height:84px}
+.season .band{position:absolute;top:28px;height:14px;border-radius:7px;opacity:.9}
+.season .lab{position:absolute;top:60px;font-size:11.5px;font-weight:800;color:var(--muted)}
+.season .pt{all:unset;cursor:pointer;position:absolute;top:20px;width:30px;height:30px;margin-left:-15px;border-radius:50%;background:#fff;border:3px solid var(--ink);display:grid;place-items:center;font-size:14px}
+.season .pt.open{border-style:dashed}
+.season .pt:hover{transform:scale(1.15)}
+.season .mon{position:absolute;top:0;font-size:11px;color:var(--muted);font-weight:700}
+
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(20,20,18,.45);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.ov.open{display:flex}
+.modal{background:#fff;border-radius:26px;width:min(720px,100%);max-height:92vh;overflow:auto;box-shadow:0 30px 70px -20px rgba(0,0,0,.5)}
+.mhead{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:1}
+.mhead .ic{width:40px;height:40px;border-radius:12px;background:var(--yel);display:grid;place-items:center;font-size:20px;border:2px solid var(--ink)}
+.mhead b{display:block}
+.mhead .x{margin-left:auto;border:1px solid var(--line2);background:#fff;border-radius:50%;width:36px;height:36px}
+.prog{height:5px;background:#eee;}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--mag),var(--blue),var(--yel),var(--grn));transition:width .3s}
+.mbody{padding:22px}
+.mbody h3{font-size:24px;font-weight:900;margin:0 0 6px;text-align:center}
+.mbody .lead{text-align:center;color:var(--muted);margin:0 0 18px}
+.qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.qcard{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:16px;padding:14px}
+.qcard:hover,.qcard[aria-pressed="true"]{border-color:var(--ink);background:#fffbe6}
+.qcard:focus-visible{outline:3px solid var(--focus)}
+.qcard .ic{font-size:24px;width:42px;height:42px;border-radius:12px;background:#f3f1ea;display:grid;place-items:center;flex:none}
+.qcard b{display:block;font-size:15px}
+.qcard span{font-size:13px;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.field input,.field textarea,.field select{border:1.5px solid var(--line2);border-radius:12px;padding:11px 13px;background:#fff;font-size:15px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(255,214,68,.6)}
+.field textarea{min-height:110px;resize:vertical}
+.levels{display:flex;flex-direction:column;gap:8px}
+.level{all:unset;box-sizing:border-box;cursor:pointer;border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;display:flex;justify-content:space-between;align-items:center}
+.level[aria-pressed="true"]{border-color:var(--ink);background:#fffbe6}
+.level b{font-size:14.5px}
+.mfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 22px;border-top:1px solid var(--line);position:sticky;bottom:0;background:#fff}
+.link{border:0;background:none;color:var(--muted);font-weight:700}
+.tabs4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:14px 22px 0}
+.tabs4 button{border:0;background:#f3f1ea;border-radius:10px;padding:8px 6px;font-size:12.5px;font-weight:800;color:var(--muted)}
+.tabs4 button[aria-current="true"]{background:var(--ink);color:#fff}
+.tabs4 button.done{background:#e3f3e8;color:#2a6e40}
+.suggest{background:#f6f5f0;border-radius:16px;padding:14px;margin:12px 0}
+.suggest .cap{font-size:10.5px;color:var(--muted)}
+.suggest blockquote{margin:8px 0 0;background:#fff;border-radius:12px;padding:12px 14px;font-size:15px;border-left:4px solid var(--blue)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:10px}
+
+/* Profil */
+.skillrow{display:grid;grid-template-columns:minmax(220px,1.2fr) 2fr;gap:18px;padding:16px 0;border-top:1px solid var(--line)}
+.skillrow:first-of-type{border-top:0}
+.skillname{display:flex;gap:10px;align-items:flex-start}
+.sw{width:14px;height:14px;border-radius:50%;background:var(--c);margin-top:5px;flex:none}
+.skillname b{font-size:16px;display:block}
+.skillname span{font-size:12.5px;color:var(--muted)}
+.ctx{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.ctx span{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;border:1.5px solid var(--line2);color:#a3a29c}
+.ctx span.on{border-color:var(--c);background:var(--c);color:var(--ci)}
+.quote{font-size:14px;color:var(--ink2);border-left:3px solid var(--c);padding-left:10px;margin:6px 0}
+.quote small{display:block;color:var(--muted);font-size:12px}
+.gap{font-size:13.5px;color:var(--muted);font-style:italic}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:5px}
+
+/* Listen */
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.voice{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;background:#fff}
+.voice q{display:block;font-size:15px;quotes:"«" "»"}
+.voice .m{font-size:12.5px;color:var(--muted);margin-top:4px}
+.green{background:#e8f6ee;border:1px solid #bfe3cc;border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+.warn{background:#fff6d6;border:1px solid #f0dc8f;border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sharebox{font-family:ui-monospace,Menlo,monospace;background:#f3f1ea;border-radius:10px;padding:8px 12px;font-size:13.5px;word-break:break-all}
+footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 20px 40px;border-top:1px solid var(--line)}
+@media (max-width:860px){
+  .top{height:auto;flex-wrap:wrap;padding:10px 16px;gap:8px}.nav{order:3;width:100%}
+  main{padding:18px 16px 80px}.kpis{grid-template-columns:repeat(2,1fr)}.qgrid,.two,.cols{grid-template-columns:1fr}.skillrow{grid-template-columns:1fr}.tabs4{grid-template-columns:repeat(2,1fr)}
+  .arcs{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="brand" id="home" aria-label="Zur Übersicht"><span class="rings" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><b>Doppelpass</b><small>Sportschule Lindenhof Wil</small></span></button>
+  <nav class="nav" id="nav" aria-label="Bereiche"></nav>
+  <div class="who"><button id="whoBtn" aria-haspopup="true" aria-expanded="false"></button><div class="menu" id="menu" role="menu"></div></div>
+</header>
+<div class="proto"><b>Prototyp</b> Konzeptstudie mit frei erfundenen Personen und Daten · keine offizielle Anwendung der Oberstufe Lindenhof · Eingaben bleiben nur in diesem Browser</div>
+<main id="main" tabindex="-1"></main>
+<div class="ov" id="ov" role="dialog" aria-modal="true"><div class="modal" id="modal"></div></div>
+<footer>Doppelpass · Konzeptidee für die Sportschule Lindenhof Wil · Prototyp ohne KI: Vorschläge des Assistenten sind vorformuliert</footer>
+
+<script src="daten.js"></script>
+<script>
+const KEY = "doppelpass-demo-v1";
+const fresh = () => JSON.parse(JSON.stringify(window.DEMO));
+let D; try { D = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch (e) { D = fresh(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} };
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const skill = id => D.skills.find(s => s.id === id);
+const grp = id => D.gruppen[skill(id).gruppe];
+const quest = id => D.quests.find(q => q.id === id);
+const scene = id => D.szenen.find(s => s.id === id);
+const fmt = d => new Date(d + "T12:00:00").toLocaleDateString("de-CH", { day: "numeric", month: "short", year: "numeric" });
+const QCOL = { druck: "#ffd644", rueck: "#ffd644", doppel: "#00b0ea", team: "#c95097", fair: "#c95097", foerdern: "#5ab57a" };
+
+const ROLES = {
+  schueler:   { ico: "🤸", name: "Sportschüler:in", sub: "Nina Frei · Kunstturnen", views: [["start","Übersicht"],["szenen","Meine Szenen"],["profil","Skills-Profil"],["teilen","Teilen"]] },
+  lern:       { ico: "🍎", name: "Lernbegleitung", sub: "Frau Ammann · Sportklasse 2", views: [["lern","Klasse"]] },
+  trainer:    { ico: "⏱️", name: "Trainer:in", sub: "Marco Brunner · Verein", views: [["stimme","Anfrage"]] },
+  eltern:     { ico: "🏠", name: "Eltern", sub: "Andrea Frei", views: [["stimme","Anfrage"]] },
+  betrieb:    { ico: "🏢", name: "Lehrbetrieb (Freigabelink)", sub: "liest nur Geteiltes", views: [["link","Geteiltes Profil"]] },
+  kommission: { ico: "⚖️", name: "Fachkommission", sub: "Schule + Sport", views: [["pruef","Prüfaufträge"],["modell","Kompetenzmodell"]] },
+  admin:      { ico: "⚙️", name: "Administration", sub: "Regeln & Daten", views: [["regeln","Regeln"],["daten","Rollen & Daten"]] }
+};
+const S = { role: "schueler", view: "start", filter: "alle", linkId: D.freigaben[0]?.id, lernFor: "nina" };
+
+/* ---------- Rahmen ---------- */
+function renderTop() {
+  const R = ROLES[S.role];
+  $("#whoBtn").innerHTML = `<span class="dot" aria-hidden="true">${R.ico}</span>${esc(R.name)} ▾`;
+  $("#nav").innerHTML = [...R.views, ["leit","Leitplanken"]].map(([v, l]) => `<button data-v="${v}" aria-current="${S.view === v ? "page" : "false"}">${l}</button>`).join("");
+  $("#nav").querySelectorAll("[data-v]").forEach(b => b.onclick = () => go(b.dataset.v));
+  $("#menu").innerHTML = `<div class="cap">Rolle wechseln (Demo)</div>` + Object.entries(ROLES).map(([k, r]) => `<button role="menuitem" data-r="${k}" aria-current="${k === S.role}"><span class="dot">${r.ico}</span><span><b>${esc(r.name)}</b><span>${esc(r.sub)}</span></span></button>`).join("");
+  $("#menu").querySelectorAll("[data-r]").forEach(b => b.onclick = () => { S.role = b.dataset.r; S.view = ROLES[S.role].views[0][0]; toggleMenu(false); render(); });
+}
+function toggleMenu(on) { $("#menu").classList.toggle("open", on); $("#whoBtn").setAttribute("aria-expanded", on); }
+$("#whoBtn").onclick = e => { e.stopPropagation(); toggleMenu(!$("#menu").classList.contains("open")); };
+document.addEventListener("click", e => { if (!e.target.closest(".who")) toggleMenu(false); });
+$("#home").onclick = () => { S.view = ROLES[S.role].views[0][0]; render(); };
+function go(v) { S.view = v; render(); window.scrollTo(0, 0); $("#main").focus(); }
+
+/* ---------- Bausteine ---------- */
+function sceneCard(s) {
+  const q = quest(s.quest);
+  const st = s.status === "offen" ? '<span class="pill open">Szene offen</span>' : '<span class="pill ok">analysiert</span>';
+  const vis = s.sichtbar === "geteilt" ? '<span class="pill share">geteilt</span>' : '<span class="pill priv">🔒 privat</span>';
+  return `<button class="scene" data-scene="${s.id}" style="--c:${QCOL[s.quest]}"><span class="band"></span>
+    <span class="meta"><span>${q.ico} ${esc(q.name)}</span><span>${fmt(s.datum)}</span></span>
+    <h4>${esc(s.titel)}</h4><p>${esc((s.analyse?.situation || s.roh || "").slice(0, 120))}${(s.analyse?.situation || s.roh || "").length > 120 ? " …" : ""}</p>
+    <span class="foot">${st}${vis}<span class="pill">${esc(s.bereich)}</span></span></button>`;
+}
+function bindScenes() { document.querySelectorAll("[data-scene]").forEach(b => b.onclick = () => { const s = scene(b.dataset.scene); s.status === "offen" ? openAnalyse(s.id) : openSzene(s.id); }); }
+function seasonBar() {
+  const start = new Date("2026-08-01"), end = new Date("2027-07-31"), span = end - start;
+  const pos = d => Math.max(0, Math.min(100, (new Date(d) - start) / span * 100));
+  const months = ["Aug","Sep","Okt","Nov","Dez","Jan","Feb","Mär","Apr","Mai","Jun","Jul"];
+  return `<div class="season" aria-label="Saison-Zeitachse">
+    ${months.map((m, i) => `<span class="mon" style="left:${i / 12 * 100}%">${m}</span>`).join("")}
+    ${D.saison.map(p => `<span class="band" style="left:${pos(p.von)}%;width:${pos(p.bis) - pos(p.von)}%;background:${p.farbe}"></span><span class="lab" style="left:${pos(p.von)}%">${esc(p.name)}</span>`).join("")}
+    ${D.szenen.map(s => `<button class="pt ${s.status === "offen" ? "open" : ""}" data-scene="${s.id}" style="left:${pos(s.datum)}%" title="${esc(s.titel)}" aria-label="${esc(s.titel)}">${quest(s.quest).ico}</button>`).join("")}
+  </div>`;
+}
+
+/* ---------- Sportschüler:in ---------- */
+function vStart() {
+  const ana = D.szenen.filter(s => s.status === "analysiert").length, offen = D.szenen.filter(s => s.status === "offen");
+  const stimmen = D.stimmen.filter(f => f.status === "angenommen").length, pend = D.stimmen.filter(f => f.status === "offen");
+  const bereiche = new Set(D.szenen.filter(s => s.status === "analysiert").map(s => s.bereich)).size;
+  const nxt = pend[0] ? { t: `${esc(pend[0].von)} hat eine Beobachtung geschickt`, s: `Zu «${esc(scene(pend[0].szene).titel)}». Du entscheidest, ob sie in dein Profil kommt.`, b: `<button class="btn" id="nxt">Ansehen</button>` }
+    : offen[0] ? { t: `Analysiere «${esc(offen[0].titel)}»`, s: "Vier kurze Phasen: Situation, Entscheidung, Wirkung, Transfer.", b: `<button class="btn" id="nxt">Szene analysieren</button>` }
+    : { t: "Alles analysiert", s: "Erfasse die nächste Szene direkt nach dem Training.", b: `<button class="btn" id="nxt">Szene erfassen</button>` };
+  $("#main").innerHTML = `
+  <section class="hero"><div class="arcs" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="cap">${esc(D.person.klasse)} · ${esc(D.person.sport)} · 🔒 privat geschützt</div>
+    <h1>Hoi ${esc(D.person.name.split(" ")[0])}! Was hat dich der Sport diese Woche gelehrt?</h1>
+    <p>Halte Szenen aus Training, Wettkampf und Schule fest. Analysiere sie wie ein Spielvideo – und zeig, was hinter deiner Leistung steckt.</p>
+    <div class="actions"><button class="btn" id="neu">+ Szene erfassen</button><button class="btn sec" id="prof">Mein Skills-Profil</button></div></section>
+  <div class="kpis">
+    <div class="kpi" style="--c:var(--grn)"><div class="n">${ana}</div><div class="l">Szenen analysiert</div></div>
+    <div class="kpi" style="--c:var(--yel)"><div class="n">${offen.length}</div><div class="l">Szenen offen</div></div>
+    <div class="kpi" style="--c:var(--mag)"><div class="n">${stimmen}</div><div class="l">Fremdstimmen angenommen</div></div>
+    <div class="kpi" style="--c:var(--blue)"><div class="n">${bereiche}/5</div><div class="l">Bereiche, in denen du dich zeigst</div></div>
+  </div>
+  <h2 class="sec cap">Nächster Schritt</h2>
+  <div class="panel next"><div class="t"><h3>${nxt.t}</h3><div class="sub">${nxt.s}</div></div>${nxt.b}</div>
+  ${D.aufgaben.length ? `<div class="panel"><h3>Aufgabe von deiner Lernbegleitung</h3>${D.aufgaben.map(a => { const v = D.vorlagen.find(x => x.id === a.vorlage); return `<div class="sub"><b style="color:var(--ink)">${esc(v.titel)}</b> (${esc(v.dauer)}) · bis ${fmt(a.bis)} · ${esc(v.text)}</div>`; }).join("")}</div>` : ""}
+  <h2 class="sec cap">Deine Saison</h2>
+  <div class="panel">${seasonBar()}<div class="sub" style="margin-top:6px">Gestrichelte Punkte sind offene Szenen. Klick auf einen Punkt öffnet die Szene.</div></div>
+  <h2 class="sec cap">Zuletzt analysiert</h2>
+  <div class="grid">${D.szenen.filter(s => s.status === "analysiert").sort((a, b) => b.datum.localeCompare(a.datum)).slice(0, 3).map(sceneCard).join("")}</div>`;
+  $("#neu").onclick = openErfassen; $("#prof").onclick = () => go("profil");
+  $("#nxt").onclick = pend[0] ? () => openStimme(pend[0].id) : offen[0] ? () => openAnalyse(offen[0].id) : openErfassen;
+  bindScenes();
+}
+function vSzenen() {
+  const list = D.szenen.filter(s => S.filter === "alle" || (S.filter === "offen" ? s.status === "offen" : S.filter === "geteilt" ? s.sichtbar === "geteilt" : s.status === "analysiert")).sort((a, b) => b.datum.localeCompare(a.datum));
+  $("#main").innerHTML = `<div class="panel" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div style="flex:1"><h3>Meine Szenen</h3><div class="sub">Alles, was du festgehalten hast. Privat, bis du es teilst.</div></div><button class="btn" id="neu">+ Szene erfassen</button></div>
+    <div class="filters">${[["alle","Alle"],["analysiert","Analysiert"],["offen","Offen"],["geteilt","Geteilt"]].map(([k, l]) => `<button class="chipbtn" data-f="${k}" aria-pressed="${S.filter === k}">${l}</button>`).join("")}</div>
+    <div class="grid">${list.map(sceneCard).join("")}<button class="scene add" id="neu2">＋<br>Neue Szene erfassen</button></div>`;
+  document.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { S.filter = b.dataset.f; vSzenen(); });
+  $("#neu").onclick = openErfassen; $("#neu2").onclick = openErfassen; bindScenes();
+}
+function vProfil() {
+  const ana = D.szenen.filter(s => s.status === "analysiert");
+  $("#main").innerHTML = `<div class="panel" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div style="flex:1"><h3>Mein Skills-Profil</h3><div class="sub">Was du neben dem Unterricht zeigst – in Worten belegt, nicht in Punkten. Farbige Bereiche: dort wurde der Skill beobachtet.</div>
+    <div class="legend">${Object.values(D.gruppen).map(g => `<span style="--c:${g.farbe}"><i></i>${g.name}</span>`).join("")}</div></div><button class="btn sec" id="teil">Profil teilen</button></div>
+    <div class="panel">${D.skills.map(sk => {
+      const g = D.gruppen[sk.gruppe];
+      const sz = ana.filter(s => s.skills.includes(sk.id));
+      const ber = new Set(sz.map(s => s.bereich));
+      const fs = D.stimmen.filter(f => f.status === "angenommen" && sz.some(s => s.id === f.szene));
+      return `<div class="skillrow" style="--c:${g.farbe};--ci:${g.ink}"><div class="skillname"><span class="sw"></span><div><b>${esc(sk.name)}</b><span>${esc(sk.kurz)}</span><br><span>Lehrplan 21: ${esc(sk.lp21)} · Beruf: ${esc(sk.bivo)}</span></div></div>
+        <div><div class="ctx">${D.bereiche.map(b => `<span class="${ber.has(b) ? "on" : ""}">${b}</span>`).join("")}</div>
+        ${sz.length ? sz.slice(0, 2).map(s => `<div class="quote">${esc(s.analyse.entscheidung)}<small>aus «${esc(s.titel)}»${s.sichtbar === "privat" ? " · 🔒 privat" : ""}</small></div>`).join("") : '<div class="gap">Noch nicht sichtbar – vielleicht in der nächsten Szene?</div>'}
+        ${fs.map(f => `<div class="quote" style="border-left-style:dashed">«${esc(f.text)}»<small>Fremdstimme: ${esc(f.von)}, ${esc(f.rolle)}</small></div>`).join("")}</div></div>`;
+    }).join("")}</div>`;
+  $("#teil").onclick = () => go("teilen");
+}
+function vTeilen() {
+  const geteilt = D.szenen.filter(s => s.status === "analysiert");
+  $("#main").innerHTML = `<div class="panel"><h3>Teilen</h3><div class="sub">Du bestimmst, wer welche Szenen sieht. Jeder Link zeigt nur die gewählten Szenen, ist befristet und jederzeit widerrufbar.</div></div>
+  <div class="cols"><div class="panel"><h3>Neuen Freigabelink erstellen</h3>
+    <div class="field"><label for="emp">Für wen?</label><input id="emp" placeholder="z. B. Schnupperlehre Polymechaniker:in, Standortgespräch"></div><div class="filters" style="margin-top:-6px">${["Standortgespräch","Schnupperlehre","Berufswahlunterricht"].map(t => `<button class="chipbtn" type="button" data-emp="${t}">${t}</button>`).join("")}</div>
+    <div class="field"><label for="bis">Gültig bis</label><input id="bis" type="date" value="2026-12-31"></div>
+    <div class="field"><label>Welche Szenen?</label>${geteilt.map(s => `<label style="display:flex;gap:8px;align-items:center;font-weight:600;font-size:14px;letter-spacing:0;text-transform:none"><input type="checkbox" value="${s.id}" ${s.sichtbar === "geteilt" ? "checked" : ""}> ${esc(s.titel)}${s.sichtbar === "privat" ? " 🔒" : ""}</label>`).join("")}</div>
+    <button class="btn" id="mk">Link erstellen</button><div id="mkmsg" class="sub" style="margin-top:8px"></div></div>
+  <div class="panel"><h3>Aktive Links</h3>${D.freigaben.map(f => `<div class="voice"><b>${esc(f.empfaenger)}</b><div class="m">${f.szenen.length} Szenen · gültig bis ${fmt(f.bis)} · ${f.aufrufe} Aufrufe</div>
+    <div class="sharebox" style="margin:8px 0">doppelpass.example/f/${esc(f.id)}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" data-open="${f.id}">So sieht es der Empfänger</button><button class="btn sec sm" data-del="${f.id}">Widerrufen</button></div></div>`).join("") || '<div class="sub">Keine aktiven Links.</div>'}
+    <div class="sub">Private Szenen und Fremdstimmen erscheinen nur, wenn du sie auswählst.</div></div></div>`;
+  document.querySelectorAll("[data-emp]").forEach(b => b.onclick = () => { $("#emp").value = b.dataset.emp; });
+  $("#mk").onclick = () => {
+    const ids = [...document.querySelectorAll('.cols input[type=checkbox]:checked')].map(x => x.value);
+    const emp = $("#emp").value.trim();
+    if (!emp || !ids.length) { $("#mkmsg").textContent = "Bitte Empfänger und mindestens eine Szene wählen."; return; }
+    const id = Math.random().toString(36).slice(2, 8);
+    D.freigaben.unshift({ id, empfaenger: emp, szenen: ids, bis: $("#bis").value, aufrufe: 0 }); save(); vTeilen();
+  };
+  document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { S.linkId = b.dataset.open; S.role = "betrieb"; S.view = "link"; render(); });
+  document.querySelectorAll("[data-del]").forEach(b => b.onclick = () => { D.freigaben = D.freigaben.filter(f => f.id !== b.dataset.del); save(); vTeilen(); });
+}
+
+/* ---------- Modals ---------- */
+function modal(html) { $("#modal").innerHTML = html; $("#ov").classList.add("open"); const x = $("#modal .x"); if (x) x.onclick = closeModal; setTimeout(() => { const f = $("#modal button, #modal input"); f && f.focus(); }, 30); }
+function closeModal() { $("#ov").classList.remove("open"); render(); }
+$("#ov").onclick = e => { if (e.target.id === "ov") closeModal(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#ov").classList.contains("open")) closeModal(); });
+
+let NEU = null;
+function openErfassen() { NEU = { step: 1, quest: null, titel: "", bereich: "Training", datum: "2026-11-11", roh: "", einsatz: 2 }; stepErfassen(); }
+function stepErfassen() {
+  const n = NEU, steps = ["Was ist passiert?", "Titel & Bereich", "Szene festhalten", "Wie viel stand auf dem Spiel?"];
+  let body = "";
+  if (n.step === 1) body = `<h3>Was ist passiert?</h3><p class="lead">Wähle die Karte, die am besten passt.</p><div class="qgrid">${D.quests.map(q => `<button class="qcard" data-q="${q.id}" aria-pressed="${n.quest === q.id}"><span class="ic">${q.ico}</span><span><b>${esc(q.name)}</b><span>${esc(q.text)}</span></span></button>`).join("")}</div>`;
+  if (n.step === 2) body = `<div class="field"><label for="ti">Gib deiner Szene einen Titel</label><input id="ti" value="${esc(n.titel)}" placeholder="z. B. Wie ich im Final ruhig geblieben bin"></div>
+    <div class="field"><label>Wo war das?</label><div class="filters">${D.bereiche.map(b => `<button class="chipbtn" data-b="${b}" aria-pressed="${n.bereich === b}">${b}</button>`).join("")}</div></div>
+    <div class="field"><label for="da">Datum</label><input id="da" type="date" value="${n.datum}"></div>`;
+  if (n.step === 3) body = `<h3>Halte die Szene fest</h3><p class="lead">Kein Aufsatz nötig – Stichworte reichen. Analysiert wird später.</p>
+    <div class="two" style="margin-bottom:12px"><button class="btn sec" id="mic" type="button">🎙️ Sprachmemo (im Prototyp nicht aktiv)</button><button class="btn sec" type="button" disabled>⌨️ Stichworte tippen</button></div>
+    <div class="field"><label for="ro">Was ist passiert? Wer war dabei? Was war deine Aufgabe?</label><textarea id="ro">${esc(n.roh)}</textarea></div>
+    <div class="note">Hinweis: Keine Diagnosen oder Gesundheitsdaten erfassen – es geht um deinen Umgang mit der Situation.</div>`;
+  if (n.step === 4) body = `<h3>Wie viel stand auf dem Spiel?</h3><p class="lead">Je mehr auf dem Spiel stand, desto mehr zeigt die Szene.</p><div class="levels">${D.einsatz.map((e, i) => `<button class="level" data-l="${i + 1}" aria-pressed="${n.einsatz === i + 1}"><b>Stufe ${i + 1}: ${e}</b>${n.einsatz === i + 1 ? "✓" : ""}</button>`).join("")}</div>`;
+  modal(`<div class="mhead"><span class="ic">🎬</span><div><b>Szene erfassen</b><span class="sub">Schritt ${n.step} von 4: ${steps[n.step - 1]}</span></div><button class="x" aria-label="Schliessen">✕</button></div>
+    <div class="prog"><i style="width:${n.step * 25}%"></i></div><div class="mbody">${body}</div>
+    <div class="mfoot"><button class="link" id="back">${n.step > 1 ? "← Zurück" : ""}</button><button class="btn" id="fwd">${n.step < 4 ? "Weiter →" : "Szene speichern"}</button></div>`);
+  document.querySelectorAll("[data-q]").forEach(b => b.onclick = () => { n.quest = b.dataset.q; n.step = 2; stepErfassen(); });
+  document.querySelectorAll("[data-b]").forEach(b => b.onclick = () => { keep(); n.bereich = b.dataset.b; stepErfassen(); });
+  document.querySelectorAll("[data-l]").forEach(b => b.onclick = () => { n.einsatz = +b.dataset.l; stepErfassen(); });
+  function keep() { if ($("#ti")) n.titel = $("#ti").value; if ($("#da")) n.datum = $("#da").value; if ($("#ro")) n.roh = $("#ro").value; }
+  $("#back").onclick = () => { keep(); if (n.step > 1) { n.step--; stepErfassen(); } };
+  $("#fwd").onclick = () => {
+    keep();
+    if (n.step === 1 && !n.quest) return;
+    if (n.step === 2 && !n.titel.trim()) { $("#ti").focus(); return; }
+    if (n.step < 4) { n.step++; stepErfassen(); return; }
+    const id = "s" + Date.now();
+    D.szenen.push({ id, titel: n.titel.trim(), quest: n.quest, bereich: n.bereich, datum: n.datum, einsatz: n.einsatz, status: "offen", sichtbar: "privat", skills: [n.quest === "druck" ? "druck" : n.quest], roh: n.roh });
+    save(); openAnalyse(id);
+  };
+}
+let AN = null;
+function openAnalyse(id) { const s = scene(id); AN = { id, i: 0, txt: Object.assign({ situation: "", entscheidung: "", wirkung: "", transfer: "" }, s.analyse || {}), edit: false }; stepAnalyse(); }
+function stepAnalyse() {
+  const s = scene(AN.id), p = D.phasen[AN.i], vor = (D.vorschlaege[s.quest] || D.vorschlaege.druck)[AN.i];
+  const cur = AN.txt[p.id];
+  modal(`<div class="mhead"><span class="ic">🎥</span><div><b>Szene analysieren</b><span class="sub">«${esc(s.titel)}» · Phase ${AN.i + 1} von 4</span></div><button class="x" aria-label="Schliessen">✕</button></div>
+    <div class="tabs4">${D.phasen.map((ph, i) => `<button data-p="${i}" aria-current="${i === AN.i}" class="${AN.txt[ph.id] && i !== AN.i ? "done" : ""}">${i + 1} ${ph.name}</button>`).join("")}</div>
+    <div class="mbody"><div class="cap" style="color:var(--muted)">${p.id === "transfer" ? "Transfer in Schule & Beruf" : "Wie in einer Videoanalyse"}</div>
+      <h3 style="text-align:left;margin-top:6px">${esc(p.frage)}</h3>
+      ${s.roh ? `<div class="sub">Deine Notiz: «${esc(s.roh)}»</div>` : ""}
+      <div class="suggest"><div class="cap">Vorschlag des Assistenten (im Prototyp vorformuliert)</div><blockquote>${esc(vor)}</blockquote></div>
+      <div class="field" ${cur || AN.edit ? "" : 'style="display:none"'} id="own"><label for="tx">Deine Worte</label><textarea id="tx">${esc(cur)}</textarea></div>
+      <div class="two"><button class="btn" id="take">Passt – übernehmen</button><button class="btn sec" id="ed">Eigene Worte</button></div>
+      <div class="note">Du hast das letzte Wort. Nichts wird ohne deine Bestätigung gespeichert.</div></div>
+    <div class="mfoot"><button class="link" id="back">${AN.i > 0 ? "← Zurück" : ""}</button><button class="btn dark" id="fwd">${AN.i < 3 ? "Nächste Phase →" : "Analyse abschliessen"}</button></div>`);
+  const keep = () => { const t = $("#tx"); if (t && $("#own").style.display !== "none") AN.txt[p.id] = t.value; };
+  document.querySelectorAll("[data-p]").forEach(b => b.onclick = () => { keep(); AN.i = +b.dataset.p; AN.edit = false; stepAnalyse(); });
+  $("#take").onclick = () => { AN.txt[p.id] = vor; next(); };
+  $("#ed").onclick = () => { AN.edit = true; $("#own").style.display = ""; $("#tx").value = cur || vor; $("#tx").focus(); };
+  $("#back").onclick = () => { keep(); if (AN.i > 0) { AN.i--; AN.edit = false; stepAnalyse(); } };
+  $("#fwd").onclick = () => { keep(); next(); };
+  function next() {
+    if (AN.i < 3) { AN.i++; AN.edit = false; stepAnalyse(); return; }
+    if (D.phasen.some(ph => !String(AN.txt[ph.id]).trim())) { const miss = D.phasen.findIndex(ph => !String(AN.txt[ph.id]).trim()); AN.i = miss; stepAnalyse(); return; }
+    Object.assign(s, { analyse: AN.txt, status: "analysiert" }); save(); openSzene(s.id, true);
+  }
+}
+function openSzene(id, neu) {
+  const s = scene(id), q = quest(s.quest);
+  const fs = D.stimmen.filter(f => f.szene === id), fb = D.feedback.filter(f => f.szene === id);
+  modal(`<div class="mhead"><span class="ic">${q.ico}</span><div><b>${esc(s.titel)}</b><span class="sub">${esc(q.name)} · ${esc(s.bereich)} · ${fmt(s.datum)} · Stufe ${s.einsatz}</span></div><button class="x" aria-label="Schliessen">✕</button></div>
+    <div class="mbody">${neu ? '<div class="green">✓ Analyse gespeichert. Die Szene ist privat, bis du sie teilst.</div>' : ""}
+      ${D.phasen.map(p => `<div class="quote" style="--c:${p.id === "transfer" ? "var(--grn)" : "var(--blue)"}"><small class="cap" style="font-size:10.5px">${p.name}</small>${esc(s.analyse?.[p.id] || "–")}</div>`).join("")}
+      <div style="margin:10px 0">${s.skills.map(k => { const g = grp(k); return `<span class="pill skill" style="--c:${g.farbe};--ci:${g.ink}">${esc(skill(k).name)}</span>`; }).join(" ")}</div>
+      ${fs.length ? `<h4>Fremdstimmen</h4>${fs.map(f => `<div class="voice"><q>${esc(f.text)}</q><div class="m">${esc(f.von)}, ${esc(f.rolle)} · ${f.status === "angenommen" ? "von dir angenommen" : "wartet auf deine Annahme"}</div></div>`).join("")}` : ""}
+      ${fb.length ? `<h4>Feedback</h4>${fb.map(f => `<div class="voice"><q>${esc(f.text)}</q><div class="m">${esc(f.von)}</div></div>`).join("")}` : ""}
+    </div>
+    <div class="mfoot"><span class="pill ${s.sichtbar === "geteilt" ? "share" : "priv"}">${s.sichtbar === "geteilt" ? "geteilt mit Lernbegleitung" : "🔒 privat"}</span>
+      <div style="display:flex;gap:8px"><button class="btn sec sm" id="vis">${s.sichtbar === "geteilt" ? "Wieder privat machen" : "Mit Lernbegleitung teilen"}</button><button class="btn sm" id="req">Fremdstimme anfragen</button></div></div>`);
+  $("#vis").onclick = () => { s.sichtbar = s.sichtbar === "geteilt" ? "privat" : "geteilt"; save(); openSzene(id); };
+  $("#req").onclick = () => { if (!D.anfragen.some(a => a.szene === id)) D.anfragen.push({ id: "a" + Date.now(), szene: id, an: "trainer", text: `Kannst du bestätigen, was du bei «${s.titel}» beobachtet hast?` }); save(); $("#req").textContent = "Anfrage an Trainer:in gesendet ✓"; };
+}
+function openStimme(fid) {
+  const f = D.stimmen.find(x => x.id === fid), s = scene(f.szene);
+  modal(`<div class="mhead"><span class="ic">💬</span><div><b>Neue Fremdstimme</b><span class="sub">zu «${esc(s.titel)}»</span></div><button class="x" aria-label="Schliessen">✕</button></div>
+    <div class="mbody"><div class="voice"><q>${esc(f.text)}</q><div class="m">${esc(f.von)}, ${esc(f.rolle)} · ${fmt(f.datum)}</div></div>
+    <p class="sub">Eine Fremdstimme kommt nur in dein Profil, wenn du sie annimmst. Du kannst sie auch ablehnen – die Person erfährt nur, dass sie nicht übernommen wurde.</p></div>
+    <div class="mfoot"><button class="btn sec" id="no">Nicht übernehmen</button><button class="btn" id="yes">In mein Profil übernehmen</button></div>`);
+  $("#yes").onclick = () => { f.status = "angenommen"; save(); closeModal(); };
+  $("#no").onclick = () => { f.status = "abgelehnt"; save(); closeModal(); };
+}
+
+/* ---------- Lernbegleitung ---------- */
+function vLern() {
+  const geteilt = D.szenen.filter(s => s.sichtbar === "geteilt" && s.status === "analysiert");
+  const privat = D.szenen.length - geteilt.length;
+  $("#main").innerHTML = `<div class="panel" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center"><div style="flex:1"><div class="cap" style="color:var(--muted)">Lernbegleitung · Sportklasse 2 · alle Swiss-Olympic-Sportarten</div><h3>Begleiten, nicht bewerten</h3><div class="sub">Du siehst nur Szenen, die deine Schüler:innen mit dir geteilt haben.</div></div>
+    <div class="field" style="margin:0;min-width:220px"><label for="who">Schüler:in</label><select id="who">${D.klasse.map(k => `<option value="${k.id}" ${S.lernFor === k.id ? "selected" : ""}>${esc(k.name)} (${esc(k.sport)})</option>`).join("")}</select></div></div>
+    ${S.lernFor !== "nina" ? `<div class="panel"><div class="sub">Im Prototyp sind nur für Nina Frei Szenen hinterlegt.</div></div>` : `
+    <div class="green">✓ Aktive Freigabe von Nina Frei: ${geteilt.length} Szenen einsehbar <span style="float:right">🔒 ${privat} Szenen privat (kein Zugriff)</span></div>
+    <div class="cols"><div>${geteilt.map(s => `<div class="panel"><div class="cap" style="color:var(--muted)">${esc(quest(s.quest).name)} · ${fmt(s.datum)}</div><h3 style="font-size:17px;margin-top:4px">${esc(s.titel)}</h3>
+      <div class="quote" style="--c:var(--grn)"><small class="cap" style="font-size:10.5px">Transfer</small>${esc(s.analyse.transfer)}</div>
+      ${D.feedback.filter(f => f.szene === s.id).map(f => `<div class="voice"><q>${esc(f.text)}</q><div class="m">${esc(f.von)}</div></div>`).join("")}
+      <div class="field" style="margin:8px 0 6px"><label for="fb_${s.id}">Ermutigendes Feedback</label><textarea id="fb_${s.id}" style="min-height:60px" placeholder="Was hast du beobachtet? Was nimmst du wahr?"></textarea></div>
+      <button class="btn sm" data-fb="${s.id}">Feedback hinterlegen</button>
+      ${s.quest === "doppel" ? `<button class="btn sec sm" data-best="${s.id}" style="margin-left:6px">Organisationsleistung bestätigen</button>` : ""}</div>`).join("")}</div>
+    <div><div class="panel"><h3>Reflexionsaufgabe zuteilen</h3><div class="sub" style="margin-bottom:10px">Nur von der Fachkommission geprüfte Vorlagen.</div>
+      ${D.vorlagen.filter(v => v.status === "geprüft").map(v => `<label class="voice" style="display:flex;gap:10px;align-items:flex-start;cursor:pointer"><input type="radio" name="vl" value="${v.id}"><span><b>${esc(v.titel)}</b> · ${esc(v.dauer)} <span class="pill ok">geprüft</span><div class="m">${esc(v.text)}</div></span></label>`).join("")}
+      <button class="btn" id="zu">Aufgabe zuteilen</button><div id="zumsg" class="sub" style="margin-top:8px"></div></div>
+      <div class="panel"><h3>Standortgespräch vorbereiten</h3><div class="sub" style="margin-bottom:8px">Nina wählt zwei, drei Szenen als Grundlage für das Gespräch mit Eltern und Trainer:in. Statt Noten und Resultaten: Was hat sie gezeigt, wo will sie hin?</div>
+        ${geteilt.slice(0,3).map(s => `<div class="voice"><b>${esc(s.titel)}</b><div class="m">${esc(skill(s.skills[0]).name)} · ${esc(s.bereich)}</div></div>`).join("")}</div>
+      <div class="panel"><h3>Berufswahlunterricht</h3><div class="sub">Die Transfer-Sätze zeigen, welche Stärken auch in einer Lehre zählen. Daraus entsteht mit Nina ein Freigabelink für Schnupperlehren – sie entscheidet, was drin ist.</div></div></div></div>`}`;
+  $("#who").onchange = e => { S.lernFor = e.target.value; vLern(); };
+  document.querySelectorAll("[data-fb]").forEach(b => b.onclick = () => { const t = $("#fb_" + b.dataset.fb).value.trim(); if (!t) return; D.feedback.push({ szene: b.dataset.fb, von: "Frau Ammann (Lernbegleitung, fiktiv)", text: t }); save(); vLern(); });
+  document.querySelectorAll("[data-best]").forEach(b => b.onclick = () => { D.feedback.push({ szene: b.dataset.best, von: "Frau Ammann (Lernbegleitung, fiktiv)", text: "Bestätigt: Termine selbstständig abgesprochen und Stoff nachgeholt." }); save(); vLern(); });
+  const z = $("#zu"); if (z) z.onclick = () => { const v = document.querySelector('input[name=vl]:checked'); if (!v) return; D.aufgaben.push({ vorlage: v.value, von: "Frau Ammann (Lernbegleitung, fiktiv)", bis: "2026-12-15" }); save(); $("#zumsg").textContent = "Zugeteilt ✓ – Nina sieht die Aufgabe auf ihrer Übersicht."; };
+}
+
+/* ---------- Trainer:in / Eltern ---------- */
+function vStimme() {
+  const isT = S.role === "trainer";
+  const a = D.anfragen.find(x => x.an === (isT ? "trainer" : "eltern"));
+  const s = a && scene(a.szene);
+  const mine = D.stimmen.filter(f => isT ? /Trainer/.test(f.rolle) : /Mutter|Vater|Eltern/.test(f.rolle));
+  $("#main").innerHTML = `<section class="hero"><div class="arcs" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="cap">${isT ? "Trainer:innen" : "Eltern"} · Beobachtung beitragen</div>
+    <h1>${isT ? "Du siehst, was Nina im Sport leistet." : "Sie sehen, was Nina zu Hause leistet."}</h1>
+    <p>Deine Beobachtung hilft Jugendlichen, Stärken zu erkennen, die sie selbst für selbstverständlich halten. Du siehst nur diese eine Anfrage, nicht das ganze Portfolio.</p></section>
+    ${a ? `<div class="panel"><div class="cap" style="color:var(--muted)">Anfrage von Nina Frei · ${esc(quest(s.quest).name)}</div><h3 style="margin-top:4px">«${esc(s.titel)}»</h3><div class="sub">${esc(a.text)}</div>
+      <div class="two" style="margin-top:14px"><div class="field"><label for="n">Name</label><input id="n" value="${isT ? "Marco Brunner" : "Andrea Frei"}"></div><div class="field"><label for="r">Beziehung / Rolle</label><input id="r" value="${isT ? "Trainer Kunstturnen (fiktiv)" : "Mutter (fiktiv)"}"></div></div>
+      <div class="field"><label for="b">Was hat Nina konkret getan – und welche Wirkung hatte es?</label><textarea id="b" placeholder="Beschreiben Sie beobachtbares Verhalten, kein Pauschallob."></textarea></div>
+      <div class="note" style="text-align:left">Keine Leistungsdaten (Zeiten, Noten, Selektionen) und keine Gesundheitsangaben. Nina entscheidet, ob Ihre Beobachtung in ihr Profil kommt.</div>
+      <div style="margin-top:12px"><button class="btn" id="send">Beobachtung senden</button> <span id="smsg" class="sub"></span></div></div>` : `<div class="panel"><div class="sub">Zurzeit keine offene Anfrage.</div></div>`}
+    <h2 class="sec cap">Bisherige Beiträge</h2>${mine.map(f => `<div class="voice"><q>${esc(f.text)}</q><div class="m">zu «${esc(scene(f.szene).titel)}» · ${f.status === "angenommen" ? "✓ von Nina angenommen" : f.status === "abgelehnt" ? "nicht übernommen" : "wartet auf Ninas Entscheid"}</div></div>`).join("") || '<div class="sub">Noch keine.</div>'}`;
+  const sb = $("#send"); if (sb) sb.onclick = () => {
+    const t = $("#b").value.trim(); if (t.length < 20) { $("#smsg").textContent = "Bitte etwas konkreter beschreiben."; return; }
+    D.stimmen.push({ id: "f" + Date.now(), szene: a.szene, von: $("#n").value, rolle: $("#r").value, text: t, status: "offen", datum: "2026-11-11" });
+    D.anfragen = D.anfragen.filter(x => x.id !== a.id); save(); vStimme();
+  };
+}
+
+/* ---------- Lehrbetrieb (Freigabelink) ---------- */
+function vLink() {
+  const f = D.freigaben.find(x => x.id === S.linkId) || D.freigaben[0];
+  if (!f) { $("#main").innerHTML = `<div class="panel"><h3>Link nicht gültig</h3><div class="sub">Dieser Freigabelink wurde widerrufen oder ist abgelaufen.</div></div>`; return; }
+  const sz = f.szenen.map(scene).filter(Boolean);
+  const sk = [...new Set(sz.flatMap(s => s.skills))];
+  $("#main").innerHTML = `<div class="warn">🔗 Freigabelink für <b>${esc(f.empfaenger)}</b> · gültig bis ${fmt(f.bis)} · nur ${sz.length} ausgewählte Szenen sichtbar</div>
+    <section class="hero"><div class="arcs" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="cap">Sportlerprofil Plus</div><h1>${esc(D.person.name)}</h1><p>${esc(D.person.klasse)}, Sportschule Lindenhof Wil · ${esc(D.person.sport)}. Was neben dem Unterricht sichtbar wird – in eigenen Worten, mit Bestätigungen von Erwachsenen.</p></section>
+    <div class="panel"><h3>Gezeigte Stärken</h3><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${sk.map(k => { const g = grp(k); return `<span class="pill skill" style="--c:${g.farbe};--ci:${g.ink}">${esc(skill(k).name)}</span>`; }).join("")}</div>
+      <div class="sub" style="margin-top:8px">Berufsbildung: ${[...new Set(sk.map(k => skill(k).bivo))].map(esc).join(" · ")}</div></div>
+    ${sz.map(s => `<div class="panel"><div class="cap" style="color:var(--muted)">${esc(quest(s.quest).name)} · ${fmt(s.datum)}</div><h3 style="margin-top:4px">${esc(s.titel)}</h3>
+      ${D.phasen.map(p => `<div class="quote" style="--c:${p.id === "transfer" ? "var(--grn)" : "var(--blue)"}"><small class="cap" style="font-size:10.5px">${p.name}</small>${esc(s.analyse?.[p.id] || "–")}</div>`).join("")}
+      ${D.stimmen.filter(x => x.szene === s.id && x.status === "angenommen").map(x => `<div class="voice"><q>${esc(x.text)}</q><div class="m">Bestätigt von ${esc(x.von)}, ${esc(x.rolle)}</div></div>`).join("")}</div>`).join("")}
+    <div class="sub" style="text-align:center">Keine Bewertung, kein Ranking: Das Profil zeigt Szenen, die Nina selbst ausgewählt hat.</div>`;
+}
+
+/* ---------- Fachkommission ---------- */
+function vPruef() {
+  $("#main").innerHTML = `<div class="panel"><div class="cap" style="color:var(--muted)">Fachkommission · Schule und Sport gemeinsam</div><h3>Prüfaufträge (${D.pruefungen.filter(p => p.status === "offen").length} offen)</h3><div class="sub">Entscheide gelten immer für eine bestimmte Version und brauchen eine Begründung.</div></div>
+    ${D.pruefungen.filter(p => p.status === "offen").map(p => `<div class="panel" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:240px"><div class="cap" style="color:var(--muted)">${esc(p.typ)} · Version ${esc(p.version)} · von ${esc(p.von)}</div><h3 style="font-size:17px;margin-top:4px">${esc(p.titel)}</h3><div class="sub">${esc(p.notiz)}</div></div><button class="btn sm" data-p="${p.id}">Prüfung vornehmen</button></div>`).join("") || '<div class="panel"><div class="sub">Keine offenen Prüfaufträge.</div></div>'}
+    <h2 class="sec cap">Zuletzt geprüft</h2><div class="panel"><table><thead><tr><th>Gegenstand</th><th>Version</th><th>Entscheid</th><th>Begründung</th></tr></thead><tbody>${D.geprueft.map(g => `<tr><td>${esc(g.titel)}</td><td>${esc(g.version)}</td><td><span class="pill ${g.entscheid === "freigegeben" ? "ok" : "open"}">${esc(g.entscheid)}</span></td><td>${esc(g.begruendung)}</td></tr>`).join("")}</tbody></table></div>`;
+  document.querySelectorAll("[data-p]").forEach(b => b.onclick = () => {
+    const p = D.pruefungen.find(x => x.id === b.dataset.p);
+    modal(`<div class="mhead"><span class="ic">⚖️</span><div><b>Fachprüfung</b><span class="sub">${esc(p.typ)} · Version ${esc(p.version)}</span></div><button class="x" aria-label="Schliessen">✕</button></div>
+      <div class="mbody"><h3 style="text-align:left">${esc(p.titel)}</h3><div class="sub" style="margin-bottom:12px">Eingereicht von ${esc(p.von)}. ${esc(p.notiz)}</div>
+      <div class="field"><label for="beg">Begründung des Entscheids (Pflicht)</label><textarea id="beg" placeholder="z. B. Klar formuliert, passt zur Saisonlogik, keine Leistungsdaten."></textarea></div><div id="pm" class="sub"></div></div>
+      <div class="mfoot"><button class="link" id="ab">Abbrechen</button><div style="display:flex;gap:8px"><button class="btn sec sm" id="ue">Überarbeitung fordern</button><button class="btn sm" id="fr">Freigeben (geprüft)</button></div></div>`);
+    const dec = e => { const t = $("#beg").value.trim(); if (!t) { $("#pm").textContent = "Bitte begründen."; return; } p.status = e; D.geprueft.unshift({ titel: p.titel, version: p.version, entscheid: e === "frei" ? "freigegeben" : "Überarbeitung gefordert", datum: "2026-11-11", begruendung: t }); if (e === "frei" && p.typ === "Reflexionsvorlage") D.vorlagen.push({ id: "v" + Date.now(), titel: p.titel, dauer: "10 Min", text: p.notiz, status: "geprüft" }); save(); closeModal(); };
+    $("#ab").onclick = closeModal; $("#fr").onclick = () => dec("frei"); $("#ue").onclick = () => dec("ueber");
+  });
+}
+function vModell() {
+  $("#main").innerHTML = `<div class="panel"><div class="cap" style="color:var(--muted)">Kompetenzmodell · Version 1.0 (Entwurf)</div><h3>Acht Sport-Skills</h3><div class="sub">Änderungen nur als neue Version mit Begründung. Begriffe der Berufsbildung mit «zu prüfen» sind noch nicht verifiziert.</div></div>
+    <div class="panel"><table><thead><tr><th>Skill</th><th>Gruppe</th><th>Lehrplan 21</th><th>Berufsbildung</th></tr></thead><tbody>${D.skills.map(s => { const g = D.gruppen[s.gruppe]; return `<tr><td><b>${esc(s.name)}</b><div class="sub">${esc(s.kurz)}</div></td><td><span class="pill skill" style="--c:${g.farbe};--ci:${g.ink}">${g.name}</span></td><td>${esc(s.lp21)}</td><td>${esc(s.bivo)}</td></tr>`; }).join("")}</tbody></table></div>`;
+}
+
+/* ---------- Administration ---------- */
+function vRegeln() {
+  $("#main").innerHTML = `<div class="panel"><div class="cap" style="color:var(--muted)">Administration · festgelegt von der Fachkommission</div><h3>Regeln des Reflexions-Assistenten</h3><div class="sub">Im Klartext, für alle einsehbar. Im Prototyp gibt es keine KI: Die Vorschläge sind vorformuliert.</div></div>
+    <div class="panel">${["Der Assistent erfindet keine Ereignisse, Erfolge oder Krisen dazu.", "Fehlt ein Beleg, sagt er: «Noch nicht sichtbar.»", "Keine Ableitung von Kompetenzen aus Stimme, Gesicht oder Dialekt.", "Keine Gesundheits- oder Leistungsdaten in Vorschlägen.", "Vorschläge sind Vorschläge: Gespeichert wird nur, was die jugendliche Person bestätigt.", "Sprachmemos werden in Text umgewandelt und danach gelöscht."].map((r, i) => `<div class="voice"><b>${i + 1}.</b> ${esc(r)}</div>`).join("")}</div>`;
+}
+function vDaten() {
+  $("#main").innerHTML = `<div class="panel"><h3>Rollen und Zugriffe</h3><table><thead><tr><th>Rolle</th><th>Sieht</th><th>Kann</th></tr></thead><tbody>
+    <tr><td>Sportschüler:in</td><td>eigenes Portfolio</td><td>erfassen, analysieren, annehmen, teilen, exportieren</td></tr>
+    <tr><td>Lernbegleitung</td><td>geteilte Szenen der eigenen Klasse</td><td>Feedback, Aufgaben zuteilen</td></tr>
+    <tr><td>Trainer:in / Eltern</td><td>nur die konkrete Anfrage</td><td>Beobachtung beitragen</td></tr>
+    <tr><td>Lehrbetrieb</td><td>nur Szenen im Freigabelink, befristet</td><td>lesen</td></tr>
+    <tr><td>Fachkommission</td><td>Vorlagen, Modell, Regeln</td><td>prüfen, freigeben</td></tr>
+    <tr><td>Administration</td><td>Konfiguration</td><td>Rollen, Klassen, Export</td></tr></tbody></table></div>
+    <div class="panel"><h3>Daten</h3><div class="sub" style="margin-bottom:10px">Im Prototyp liegen alle Daten nur in diesem Browser.</div>
+      <button class="btn sec sm" id="ex">Portfolio als JSON exportieren</button> <button class="btn sec sm" id="rs">Demodaten zurücksetzen</button></div>`;
+  $("#ex").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify({ person: D.person, szenen: D.szenen, stimmen: D.stimmen.filter(f => f.status === "angenommen") }, null, 2)], { type: "application/json" })); a.download = "doppelpass-portfolio.json"; a.click(); };
+  $("#rs").onclick = () => { D = fresh(); save(); S.role = "schueler"; S.view = "start"; render(); };
+}
+
+/* ---------- Leitplanken ---------- */
+function vLeit() {
+  $("#main").innerHTML = `<section class="hero"><div class="arcs" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="cap">Leitplanken</div><h1>Im Sport wird alles gemessen. Hier nicht.</h1><p>Doppelpass macht sichtbar, was hinter der Leistung steckt – ohne Zahlen, Ranglisten oder Selektion.</p></section>
+    <div class="cols">${[["🚫","Keine Zahl über einen Menschen","Keine Punkte, kein Score, keine Rangliste – auch nicht im Team."],["⏱️","Keine Leistungsdaten","Zeiten, Resultate und Selektionen gehören nicht hierher."],["🔒","Privat als Standard","Alle anderen sehen nur, was ausdrücklich geteilt wurde."],["✋","Das letzte Wort","Vorschläge, Fremdstimmen und Freigaben bestätigt die jugendliche Person selbst."],["🩺","Keine Gesundheitsdaten","Bei Pausen geht es um den Umgang damit, nicht um Diagnosen."],["⚖️","Schule und Sport steuern gemeinsam","Eine Fachkommission prüft Vorlagen und Modell, versioniert und begründet."]].map(([i, t, x]) => `<div class="panel"><div style="font-size:26px">${i}</div><h3 style="margin-top:6px">${t}</h3><div class="sub">${x}</div></div>`).join("")}</div>`;
+}
+
+function render() {
+  renderTop();
+  const V = { start: vStart, szenen: vSzenen, profil: vProfil, teilen: vTeilen, lern: vLern, stimme: vStimme, link: vLink, pruef: vPruef, modell: vModell, regeln: vRegeln, daten: vDaten, leit: vLeit };
+  (V[S.view] || vStart)();
+}
+render();
+</script>
+</body>
+</html>
